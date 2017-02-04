@@ -1,0 +1,17 @@
+{
+  "name": "carnage/ZendfonyCli",
+  "description": "Zend module for symfony CLI",
+  "license": "MIT",
+  "require": {
+    "php": ">=7.0",
+    "zendframework/zend-servicemanager": "^2.5",
+    "zendframework/zend-mvc": "^2.5",
+    "symfony/console": "^3.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Carnage\\ZendfonyCli\\": "src"
+    }
+  },
+  "bin": ["bin/cli", "bin/cli.php"]
+}
