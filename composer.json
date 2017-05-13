@@ -1,5 +1,5 @@
 {
-  "name": "carnage/ZendfonyCli",
+  "name": "carnage/zendfony-cli",
   "description": "Zend module for symfony CLI",
   "license": "MIT",
   "require": {
