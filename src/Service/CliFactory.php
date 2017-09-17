@@ -2,6 +2,7 @@
 
 namespace Carnage\ZendfonyCli\Service;
 
+use Interop\Container\ContainerInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\HelperSet;
 use Zend\ServiceManager\Config;
@@ -10,9 +11,14 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class CliFactory implements FactoryInterface
 {
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function createService(ServiceLocatorInterface $serviceLocator, $name = null, $requestedName = null)
     {
-        $commands = $serviceLocator->get('Config')['cli_commands'];
+        return $this($serviceLocator, $requestedName);
+    }
+
+    public function __invoke(ContainerInterface $container, $name, $options = [])
+    {
+        $commands = $container->get('Config')['cli_commands'];
         $commandsConfig = new Config($commands);
 
         $commands = array_merge(
@@ -28,7 +34,7 @@ class CliFactory implements FactoryInterface
         $cli->setCatchExceptions(true);
         $cli->setAutoExit(false);
 
-        $commandLocator = $serviceLocator->get(CommandPluginManager::class);
+        $commandLocator = $container->get(CommandPluginManager::class);
 
         foreach ($commands as $command) {
             $cli->add($commandLocator->get($command));
