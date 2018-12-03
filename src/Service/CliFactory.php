@@ -5,26 +5,18 @@ namespace Carnage\ZendfonyCli\Service;
 use Interop\Container\ContainerInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\HelperSet;
-use Zend\ServiceManager\Config;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 class CliFactory implements FactoryInterface
 {
-    public function createService(ServiceLocatorInterface $serviceLocator, $name = null, $requestedName = null)
-    {
-        return $this($serviceLocator, $requestedName);
-    }
-
-    public function __invoke(ContainerInterface $container, $name, $options = [])
+    public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
         $commands = $container->get('Config')['cli_commands'];
-        $commandsConfig = new Config($commands);
 
         $commands = array_merge(
-            array_keys($commandsConfig->getInvokables()),
-            array_keys($commandsConfig->getServices()),
-            array_keys($commandsConfig->getFactories())
+            array_keys(isset($commands['invokables']) ? $commands['invokables'] : []),
+            array_keys(isset($commands['services']) ? $commands['services'] : []),
+            array_keys(isset($commands['factories']) ? $commands['factories'] : [])
         );
 
         $cli = new Application;

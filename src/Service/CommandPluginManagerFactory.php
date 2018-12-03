@@ -2,19 +2,13 @@
 
 namespace Carnage\ZendfonyCli\Service;
 
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\Config as ServiceManagerConfig;
 use Interop\Container\ContainerInterface;
 
 class CommandPluginManagerFactory implements FactoryInterface
 {
-    public function createService(ServiceLocatorInterface $serviceLocator, $name = null, $requestedName = null)
-    {
-        return $this($serviceLocator, $requestedName);
-    }
-
-    public function __invoke(ContainerInterface $container, $name, $options = [])
+    public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
         $instance = new CommandPluginManager($container);
 
